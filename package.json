@@ -1,0 +1,11 @@
+{
+  "name": "luckyflow-app",
+  "version": "1.0.0",
+  "description": "LuckyFlow - Tvůj osobní rituál pro dobrou energii",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
