@@ -25,132 +25,189 @@ body::before {
   background: radial-gradient(ellipse 60% 40% at 0% 0%, rgba(90,138,106,0.08) 0%, transparent 60%), radial-gradient(ellipse 50% 35% at 100% 100%, rgba(193,123,92,0.07) 0%, transparent 60%);
 }
 .app { max-width:460px; margin:0 auto; padding:20px 16px 80px; position:relative; z-index:1; }
+
+/* HEADER */
 .header { text-align:center; padding:34px 0 24px; }
 .logo { font-family:'Playfair Display',serif; font-size:48px; letter-spacing:-1px; color:var(--text); line-height:1; }
 .logo em { color:var(--green); font-style:italic; }
 .logo-sub { font-size:11px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-top:7px; }
 #date-display { font-size:12px; font-weight:500; color:var(--muted2); margin-top:5px; }
+
+/* CARD */
 .card { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:22px; margin-bottom:14px; box-shadow:var(--shadow); }
 .card-title { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; display:flex; align-items:center; gap:7px; }
-.section-divider { display:flex; align-items:center; gap:12px; margin:22px 0 14px; }
-.section-divider-line { flex:1; height:1px; background:var(--border2); }
-.section-divider-text { font-family:'Playfair Display',serif; font-size:13px; font-style:italic; color:var(--muted); }
-.mood-options, .energy-options { display:flex; gap:8px; margin-bottom:4px; }
-.mood-opt, .energy-opt { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; padding:13px 6px; border-radius:16px; border:1.5px solid var(--border); background:var(--bg2); cursor:pointer; transition:all 0.2s; }
+
+/* MOOD & ENERGY GRID */
+.mood-options, .energy-options { display:flex; gap:8px; margin-bottom:14px; }
+.mood-opt, .energy-opt {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:13px 6px; border-radius:16px; border:1.5px solid var(--border);
+  background:var(--bg2); cursor:pointer; transition:all 0.2s;
+}
 .mood-opt.selected, .energy-opt.selected { background:var(--accent-soft); border-color:var(--green); transform:translateY(-3px); box-shadow:0 4px 14px var(--green-glow); }
-.mood-emoji, .e-icon { font-size:24px; }
-.mood-word, .e-label { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--muted); }
-.timer-ring-wrap { position:relative; width:150px; height:150px; margin:0 auto 18px; }
-.timer-svg { width:150px; height:150px; transform:rotate(-90deg); }
-.timer-track { fill:none; stroke:var(--border); stroke-width:6; }
-.timer-progress { fill:none; stroke:var(--focus); stroke-width:6; stroke-linecap:round; stroke-dasharray:440; stroke-dashoffset:440; transition:0.3s; }
-.timer-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.timer-time { font-family:'Playfair Display',serif; font-size:38px; color:var(--focus); }
-.water-glasses { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
-.water-glass { width:30px; height:40px; border:2px solid var(--water); border-radius:4px 4px 10px 10px; cursor:pointer; position:relative; overflow:hidden; opacity:0.3; }
-.water-glass.filled { opacity:1; background:var(--water); }
+.mood-emoji, .e-icon { font-size:26px; }
+.mood-word, .e-label { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--muted); text-align:center; }
+
+/* HISTORY */
+.mood-history { margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+.mood-hist-row { display:flex; gap:6px; margin-top:10px; }
+.mood-hist-item { width:32px; height:32px; border-radius:9px; background:var(--bg2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+/* WATER */
+.water-glasses { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.water-glass { width:30px; height:38px; border-radius:3px 3px 8px 8px; border:1.5px solid var(--water); cursor:pointer; position:relative; }
+.water-glass.filled { background:var(--water); }
+
+/* SLEEP */
 .sleep-row { display:flex; align-items:center; gap:15px; }
-.sleep-hrs { font-size:40px; font-family:'Playfair Display',serif; }
-.btn-t { padding:12px; border-radius:12px; border:none; cursor:pointer; width:100%; font-weight:bold; }
-.btn-start { background:var(--green); color:white; }
-.notes-area { width:100%; height:100px; border-radius:12px; border:1px solid var(--border); padding:10px; font-family:inherit; }
+.sleep-hrs { font-family:'Playfair Display',serif; font-size:42px; }
+.sleep-btn { width:35px; height:35px; border-radius:10px; border:1px solid var(--border2); cursor:pointer; background:var(--surface2); }
+
+/* SUGGESTIONS */
+.suggestion-box { margin-top:10px; padding:15px; border-radius:15px; font-size:13px; display:none; }
+.suggestion-box.show { display:block; animation:fadeSlide 0.4s ease; }
+@keyframes fadeSlide { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
+
 <div class="app">
   <div class="header">
     <div class="logo"><em>Lucky</em>Flow 🌿</div>
-    <div class="logo-sub">Tvůj prostor pro klid</div>
+    <div class="logo-sub">Tvé denní útočiště</div>
     <div id="date-display">---</div>
   </div>
 
-  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">Nálada</div><div class="section-divider-line"></div></div>
   <div class="card">
     <div class="card-title">✨ Jak ti dnes je?</div>
     <div class="mood-options" id="mood-opts"></div>
-    <div id="mood-suggestion" style="margin-top:10px; font-size:14px; color:var(--text2)"></div>
+    <div id="mood-suggestion" class="suggestion-box" style="background:var(--green-soft); border:1px solid var(--green-mid);"></div>
+    <div class="mood-history">
+      <div class="card-title" style="margin-bottom:0">Posledních 7 dní</div>
+      <div class="mood-hist-row" id="mood-hist"></div>
+    </div>
   </div>
 
-  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">Voda</div><div class="section-divider-line"></div></div>
+  <div class="card">
+    <div class="card-title">⚡ Tvá energie</div>
+    <div class="energy-options" id="energy-opts"></div>
+    <div id="energy-rec" class="suggestion-box" style="background:var(--accent-soft); border:1px solid var(--green-mid);"></div>
+  </div>
+
   <div class="card">
     <div class="card-title">💧 Pitný režim</div>
     <div class="water-glasses" id="water-glasses"></div>
-    <div id="water-count" style="font-weight:bold; color:var(--water)">0 / 8 sklenic</div>
+    <div id="water-count" style="font-size:13px; font-weight:bold; color:var(--water)">0 / 8 sklenic</div>
   </div>
 
-  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">Čas pro tebe</div><div class="section-divider-line"></div></div>
   <div class="card">
-    <div class="timer-ring-wrap">
-      <svg class="timer-svg"><circle class="timer-track" cx="75" cy="75" r="70"/><circle id="timer-ring" class="timer-progress" cx="75" cy="75" r="70"/></svg>
-      <div class="timer-center"><div class="timer-time" id="timer-time">25:00</div></div>
+    <div class="card-title">🌙 Spánek</div>
+    <div class="sleep-row">
+      <div class="sleep-hrs" id="sleep-val">7</div>
+      <div style="font-size:14px; color:var(--muted)">hodin</div>
+      <button class="sleep-btn" onclick="changeSleep(0.5)">+</button>
+      <button class="sleep-btn" onclick="changeSleep(-0.5)">-</button>
     </div>
-    <button class="btn-t btn-start" onclick="toggleTimer()" id="timer-btn">Soustředit se</button>
-  </div>
-
-  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-text">Poznámka</div><div class="section-divider-line"></div></div>
-  <div class="card">
-    <textarea id="notes-area" class="notes-area" placeholder="Co ti dnes udělalo radost?"></textarea>
   </div>
 </div>
 
 <script>
-let state = { water: 0, mood: null, timerRunning: false, timeLeft: 1500 };
+// DATA A LOGIKA
+let state = {
+  water: 0,
+  sleep: 7.0,
+  mood: null,
+  energy: null,
+  moodHistory: ['😐', '🙂', '😄', '😐', '😔', '🙂'] // Demo data
+};
 
 const MOODS = [
-  { emoji:'😄', label:'Skvěle' }, { emoji:'🙂', label:'Fajn' }, 
-  { emoji:'😐', label:'Ujde' }, { emoji:'😔', label:'Nic moc' }, { emoji:'😢', label:'Těžko' }
+  { emoji:'😄', label:'Skvěle', tip: 'Skvělá zpráva! Zkus tu radost dnes poslat dál. ✨' },
+  { emoji:'🙂', label:'Dobře', tip: 'Užívej si ten klidný pocit. Je to dobrý den. 🌤' },
+  { emoji:'😐', label:'Ujde', tip: 'Někdy je v pořádku být prostě jen "neutrální". 🍃' },
+  { emoji:'😔', label:'Nic moc', tip: 'Zkus si dát teplý čaj a na chvíli jen tak být. ☕' },
+  { emoji:'😢', label:'Těžce', tip: 'Dnes buď na sebe extra laskavá. Zvládneš to. 💛' }
+];
+
+const ENERGIES = [
+  { emoji:'⚡', label:'Nabitá', rec: 'Ideální čas na pohyb nebo náročný úkol!' },
+  { emoji:'🌤', label:'Dobře', rec: 'Pusť se do práce, půjde ti to od ruky.' },
+  { emoji:'😌', label:'Klidně', rec: 'Udržuj tempo, procházka ti prospěje.' },
+  { emoji:'🍃', label:'Pomalu', rec: 'Dneska nikam nespěchej, šetři síly.' },
+  { emoji:'🪫', label:'Vybitá', rec: 'Okamžitě zvolni. Tvůj úkol je dnes jen odpočinek.' }
 ];
 
 function render() {
+  // Datum
   const d = new Date();
   document.getElementById('date-display').textContent = d.toLocaleDateString('cs-CZ', { weekday: 'long', day: 'numeric', month: 'long' });
 
-  // Moods
+  // Nálada - dlaždice
   const mWrap = document.getElementById('mood-opts');
   mWrap.innerHTML = '';
   MOODS.forEach(m => {
-    const div = document.createElement('div');
-    div.className = `mood-opt ${state.mood === m.emoji ? 'selected' : ''}`;
-    div.innerHTML = `<span class="mood-emoji">${m.emoji}</span><span class="mood-word">${m.label}</span>`;
-    div.onclick = () => { state.mood = m.emoji; render(); };
-    mWrap.appendChild(div);
+    const btn = document.createElement('div');
+    btn.className = `mood-opt ${state.mood === m.emoji ? 'selected' : ''}`;
+    btn.innerHTML = `<span class="mood-emoji">${m.emoji}</span><span class="mood-word">${m.label}</span>`;
+    btn.onclick = () => { 
+      state.mood = m.emoji; 
+      const sug = document.getElementById('mood-suggestion');
+      sug.textContent = m.tip;
+      sug.classList.add('show');
+      render(); 
+    };
+    mWrap.appendChild(btn);
   });
 
-  // Water
+  // Historie nálad (posledních 7 dní)
+  const hWrap = document.getElementById('mood-hist');
+  hWrap.innerHTML = '';
+  state.moodHistory.forEach(emoji => {
+    const item = document.createElement('div');
+    item.className = 'mood-hist-item';
+    item.textContent = emoji;
+    hWrap.appendChild(item);
+  });
+
+  // Energie - dlaždice
+  const eWrap = document.getElementById('energy-opts');
+  eWrap.innerHTML = '';
+  ENERGIES.forEach((e, idx) => {
+    const btn = document.createElement('div');
+    btn.className = `energy-opt ${state.energy === idx ? 'selected' : ''}`;
+    btn.innerHTML = `<span class="e-icon">${e.emoji}</span><span class="e-label">${e.label}</span>`;
+    btn.onclick = () => { 
+      state.energy = idx; 
+      const rec = document.getElementById('energy-rec');
+      rec.textContent = e.rec;
+      rec.classList.add('show');
+      render(); 
+    };
+    eWrap.appendChild(btn);
+  });
+
+  // Voda
   const wWrap = document.getElementById('water-glasses');
   wWrap.innerHTML = '';
   for(let i=1; i<=8; i++) {
-    const glass = document.createElement('div');
-    glass.className = `water-glass ${i <= state.water ? 'filled' : ''}`;
-    glass.onclick = () => { state.water = i; render(); };
-    wWrap.appendChild(glass);
+    const g = document.createElement('div');
+    g.className = `water-glass ${i <= state.water ? 'filled' : ''}`;
+    g.onclick = () => { state.water = i; render(); };
+    wWrap.appendChild(g);
   }
   document.getElementById('water-count').textContent = `${state.water} / 8 sklenic`;
+
+  // Spánek
+  document.getElementById('sleep-val').textContent = state.sleep.toFixed(1);
 }
 
-let timerInt;
-function toggleTimer() {
-  const btn = document.getElementById('timer-btn');
-  if(state.timerRunning) {
-    clearInterval(timerInt);
-    state.timerRunning = false;
-    btn.textContent = "Pokračovat";
-  } else {
-    state.timerRunning = true;
-    btn.textContent = "Pauza";
-    timerInt = setInterval(() => {
-      state.timeLeft--;
-      const m = Math.floor(state.timeLeft / 60);
-      const s = state.timeLeft % 60;
-      document.getElementById('timer-time').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
-      const offset = 440 - (state.timeLeft / 1500) * 440;
-      document.getElementById('timer-ring').style.strokeDashoffset = offset;
-      if(state.timeLeft <= 0) { clearInterval(timerInt); alert("Čas vypršel, odpočiň si! 🌸"); }
-    }, 1000);
-  }
+function changeSleep(val) {
+  state.sleep = Math.max(0, state.sleep + val);
+  render();
 }
 
 render();
 </script>
+
 </body>
 </html>
