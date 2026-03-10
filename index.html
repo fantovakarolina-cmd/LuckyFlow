@@ -4,68 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LuckyFlow 🌿</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #F5F0E8; --bg2: #EDE7D9; --surface: #FDFAF4; --border: rgba(160,140,110,0.18);
   --text: #2D2A24; --muted: #9C8F7E; --green: #5A8A6A; --accent-soft: rgba(90,138,106,0.1); 
-  --water: #6BA3BE; --shadow: 0 2px 16px rgba(100,80,50,0.08); --error: #A66;
+  --water: #6BA3BE; --shadow: 0 4px 20px rgba(100,80,50,0.08); --error: #A66;
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:20px 16px 60px; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:20px 16px 60px; line-height: 1.5; }
 .app { max-width:460px; margin:0 auto; }
-.card { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:22px; margin-bottom:14px; box-shadow:var(--shadow); }
-.card-title { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
 
-.grid-options { display:grid; grid-template-columns: repeat(5, 1fr); gap:6px; margin-bottom:12px; }
-.opt-btn { display:flex; flex-direction:column; align-items:center; gap:5px; padding:10px 2px; border-radius:14px; border:1.5px solid var(--border); background:var(--bg2); cursor:pointer; transition: 0.2s; }
-.opt-btn.selected { background:var(--accent-soft); border-color:var(--green); transform:translateY(-2px); }
-.opt-emoji { font-size:22px; }
+/* VÝRAZNÉ LOGO */
+.header { text-align:center; padding:20px 0 30px; }
+.logo { font-family:'Playfair Display',serif; font-size:48px; font-weight:700; letter-spacing:-1px; position: relative; display: inline-block; }
+.logo em { color: var(--green); font-style: italic; font-weight: 700; }
+.logo::after { content: ''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 4px; background: var(--accent-soft); z-index: -1; }
+.date-badge { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-top:10px; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:24px; padding:22px; margin-bottom:16px; box-shadow:var(--shadow); }
+.card-title { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+
+/* MOŽNOSTI */
+.grid-options { display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; margin-bottom:12px; }
+.opt-btn { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 4px; border-radius:16px; border:1.5px solid var(--border); background:var(--bg2); cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.opt-btn.selected { background:var(--accent-soft); border-color:var(--green); transform:translateY(-4px); box-shadow: 0 6px 12px rgba(90,138,106,0.15); }
+.opt-emoji { font-size:24px; }
 .opt-label { font-size:8px; font-weight:700; text-transform:uppercase; color:var(--muted); text-align:center; }
 
+/* TIPY - DOPORUČENÍ */
+.tip-box { padding:14px; border-radius:14px; font-size:13px; margin-top:12px; display:none; border-left:4px solid var(--green); background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.03); animation: slideIn 0.3s ease-out; }
+.tip-box.show { display:block; }
+@keyframes slideIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
+
+/* FOCUS TIMER */
 .timer-modes { display: flex; gap: 8px; margin-bottom: 15px; }
-.mode-btn { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg2); cursor: pointer; font-size: 11px; font-weight: bold; }
-.mode-btn.active { background: var(--green); color: white; }
-.timer-display { text-align: center; margin: 15px 0; }
-.time-left { font-family: 'Playfair Display', serif; font-size: 48px; display: block; }
-.timer-fact { font-size: 11px; font-style: italic; color: var(--muted); margin-top: 5px; min-height: 34px; }
-
+.mode-btn { flex: 1; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg2); cursor: pointer; font-size: 11px; font-weight: 700; transition: 0.2s; }
+.mode-btn.active { background: var(--green); color: white; border-color: var(--green); }
+.time-left { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; text-align: center; display: block; margin: 10px 0; color: var(--text); }
+.timer-fact { font-size: 11px; font-style: italic; color: var(--muted); text-align: center; min-height: 32px; margin-bottom: 15px; }
 .timer-controls { display: flex; gap: 10px; }
-.main-btn { flex: 2; padding: 15px; border-radius: 15px; border: none; background: var(--text); color: white; font-weight: bold; cursor: pointer; }
-.stop-btn { flex: 1; padding: 15px; border-radius: 15px; border: 1px solid var(--border); background: white; color: var(--error); font-weight: bold; cursor: pointer; display: none; }
+.main-btn { flex: 2; padding: 16px; border-radius: 16px; border: none; background: var(--text); color: white; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.stop-btn { flex: 1; padding: 16px; border-radius: 16px; border: 1px solid var(--error); background: white; color: var(--error); font-weight: 700; cursor: pointer; display: none; }
 
-.water-wrap { display:flex; gap:5px; flex-wrap:wrap; margin-bottom: 8px; }
-.glass { width:25px; height:34px; border:2px solid var(--water); border-radius:3px 3px 8px 8px; cursor:pointer; opacity:0.25; }
-.glass.filled { background:var(--water); opacity:1; }
+/* VODA & SPÁNEK */
+.water-wrap { display:flex; gap:6px; flex-wrap:wrap; }
+.glass { width:26px; height:35px; border:2px solid var(--water); border-radius:4px 4px 10px 10px; cursor:pointer; opacity:0.25; transition: 0.3s; }
+.glass.filled { background:var(--water); opacity:1; transform: scale(1.1); }
+.sleep-ctrl { display:flex; align-items:center; justify-content: space-between; padding: 5px 0; }
+.sleep-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:white; cursor:pointer; font-size: 18px; display:flex; align-items:center; justify-content:center; }
 
-.sleep-ctrl { display:flex; align-items:center; gap:12px; }
-.sleep-btn { width:30px; height:30px; border-radius:50%; border:1px solid var(--border); background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:bold; }
-
-.summary-text { font-size: 14px; line-height: 1.6; color: var(--text2); font-style: italic; }
-.history-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-.reset-zone { margin-top: 40px; text-align: center; }
-.full-reset-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 20px; border-radius: 12px; font-size: 11px; cursor: pointer; opacity: 0.6; }
-.full-reset-btn:hover { opacity: 1; background: #fff; color: var(--error); border-color: var(--error); }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.summary-text { font-size: 14px; line-height: 1.6; color: var(--text); font-style: italic; border-left: 2px solid var(--muted); padding-left: 15px; }
+.history-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.full-reset-btn { margin-top: 40px; background: none; border: none; color: var(--muted); font-size: 11px; text-decoration: underline; cursor: pointer; width: 100%; opacity: 0.5; }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <div style="text-align:center; margin-bottom:24px;">
-    <h1 style="font-family:'Playfair Display'; font-weight:400; font-size:32px;"><em>Lucky</em>Flow 🌿</h1>
-    <div id="date-now" style="font-size:12px; color:var(--muted); margin-top:4px;"></div>
+  <div class="header">
+    <div class="logo"><em>Lucky</em>Flow</div>
+    <div id="date-now" class="date-badge"></div>
   </div>
 
   <div class="card">
     <div class="card-title">✨ Jak ti dnes je?</div>
     <div class="grid-options" id="mood-grid"></div>
+    <div id="mood-tip" class="tip-box"></div>
   </div>
 
   <div class="card">
     <div class="card-title">⚡ Tvá energie</div>
     <div class="grid-options" id="energy-grid"></div>
+    <div id="energy-tip" class="tip-box"></div>
   </div>
 
   <div class="card">
@@ -75,46 +86,42 @@ body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text)
       <button class="mode-btn" onclick="setTimer(30)" id="m30">30 min</button>
       <button class="mode-btn" onclick="setTimer(45)" id="m45">45 min</button>
     </div>
-    <div class="timer-display">
-      <span class="time-left" id="time-display">25:00</span>
-      <div class="timer-fact" id="timer-fact">Vyber si čas a začni makat!</div>
-    </div>
+    <span class="time-left" id="time-display">25:00</span>
+    <div class="timer-fact" id="timer-fact">Vyber si čas a začni tvořit!</div>
     <div class="timer-controls">
         <button class="main-btn" id="timer-start" onclick="startTimer()">Start</button>
         <button class="stop-btn" id="timer-stop" onclick="stopTimer()">Stop</button>
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+  <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px;">
     <div class="card">
       <div class="card-title">💧 Voda</div>
       <div class="water-wrap" id="water-grid"></div>
-      <div style="font-size: 10px; color: var(--muted); margin-top: 5px;">Cíl: 10 sklenic</div>
+      <div style="font-size: 10px; color: var(--muted); margin-top: 8px;">Cíl: 10 sklenic (2.5l)</div>
     </div>
     <div class="card">
       <div class="card-title">🌙 Spánek</div>
       <div class="sleep-ctrl">
-        <button class="sleep-btn" onclick="addSleep(-0.5)">-</button>
-        <span id="sleep-val" style="font-weight:bold;">7</span>
+        <button class="sleep-btn" onclick="addSleep(-0.5)">–</button>
+        <span id="sleep-val" style="font-weight:700; font-size: 20px;">7</span>
         <button class="sleep-btn" onclick="addSleep(0.5)">+</button>
       </div>
-      <div style="font-size: 10px; color: var(--muted); margin-top: 5px;">hodin spánku</div>
+      <div style="font-size: 10px; color: var(--muted); margin-top: 8px;">Hodiny spánku</div>
     </div>
   </div>
 
-  <div class="card" style="background: var(--bg2); border: 1px dashed var(--muted);">
-    <div class="card-title">📝 Shrnutí tvého dne</div>
-    <div id="daily-summary" class="summary-text">Začni klikat...</div>
+  <div class="card" style="background: #F0EBE0; border: none;">
+    <div class="card-title">📝 Dnešní příběh</div>
+    <div id="daily-summary" class="summary-text">Začni klikat a uvidíš shrnutí...</div>
   </div>
 
   <div class="card">
-    <div class="card-title">📅 Historie (7 dní)</div>
+    <div class="card-title">📅 Historie nálad</div>
     <div id="history-list"></div>
   </div>
 
-  <div class="reset-zone">
-      <button class="full-reset-btn" onclick="fullReset()">Smazat všechna data a historii</button>
-  </div>
+  <button class="full-reset-btn" onclick="fullReset()">Resetovat všechna data</button>
 </div>
 
 <script>
@@ -129,19 +136,19 @@ let currentMins = 15;
 let timerInterval;
 
 const MOODS = [
-  {e:'😄', l:'Skvěle', s:'Dnes se cítíš skvěle.'},
-  {e:'🙂', l:'Fajn', s:'Máš příjemný den.'},
-  {e:'😐', l:'Ujde', s:'Tvůj den plyne neutrálně.'},
-  {e:'😔', l:'Nic moc', s:'Dnes je to náročnější.'},
-  {e:'💀', l:'Úplně na nic', s:'Procházíš těžkým dnem.'}
+  {e:'😄', l:'Skvěle', t:'Úžasné! Zkus tuhle energii využít k něčemu kreativnímu nebo někoho potěšit. ✨', s:'Dnes záříš štěstím.'},
+  {e:'🙂', l:'Fajn', t:'Hezký den! Ideální čas na procházku nebo tvůj oblíbený rituál. 🌤', s:'Máš příjemný a klidný den.'},
+  {e:'😐', l:'Ujde', t:'V pořádku. Zkus si dát 5 minut klidu a jen tak pozorovat okolí. 🍃', s:'Tvůj den plyne v klidu.'},
+  {e:'😔', l:'Nic moc', t:'To se stává. Zkus si udělat radost malým čajem nebo horkou vanou. ☕', s:'Dnes je to trochu náročnější.'},
+  {e:'💀', l:'Na nic', t:'Dnes na sebe buď velmi laskavá. Zvládneš to, prostě jen odpočívej. 💛', s:'Dnes procházíš těžkým dnem.'}
 ];
 
 const ENERGIES = [
-  {e:'🚀', l:'Turbo', s:'máš turbo pohon'},
-  {e:'☀️', l:'Nabitý', s:'jsi plná síly'},
-  {e:'☕', l:'Pohodinda', s:'udržuješ si pohodu'},
-  {e:'☁️', l:'Nic moc', s:'baterky jsou na dně'},
-  {e:'👻', l:'Mrtvolka', s:'tělo volá po spánku'}
+  {e:'🚀', l:'Turbo', t:'Máš sílu na ty nejtěžší úkoly! Jdi do toho hned. 🔥', s:'máš turbo pohon'},
+  {e:'☀️', l:'Nabitý', t:'Skvělá kononcentrace. Vrhni se na práci nebo pohyb. 💪', s:'jsi plná síly'},
+  {e:'☕', l:'Pohodinda', t:'Ideální pro běžné činnosti. Udržuj si tohle tempo. 🧘', s:'máš pohodové tempo'},
+  {e:'☁️', l:'Nic moc', t:'Nepřetěžuj se. Raději dnes dělej jen to nejnutnější. 🍃', s:'tvé baterky jsou na dně'},
+  {e:'👻', l:'Mrtvolka', t:'Okamžitě zvolni. Tvůj jediný úkol je dnes regenerovat. 🌙', s:'tělo volá po klidu'}
 ];
 
 function saveData() { localStorage.setItem('luckyFlowData', JSON.stringify(state)); }
@@ -161,62 +168,52 @@ function startTimer() {
   state.focusTime += currentMins;
   timerEndTime = Date.now() + (currentMins * 60 * 1000);
   localStorage.setItem('timerEndTime', timerEndTime);
-  runTimer();
-  saveData();
-  render();
+  runTimer(); saveData(); render();
 }
 
 function stopTimer() {
-  clearInterval(timerInterval);
-  timerEndTime = null;
+  clearInterval(timerInterval); timerEndTime = null;
   localStorage.removeItem('timerEndTime');
   document.getElementById('time-display').textContent = currentMins + ":00";
   document.getElementById('timer-start').style.display = "block";
   document.getElementById('timer-stop').style.display = "none";
-  document.getElementById('timer-fact').textContent = "Časovač byl zastaven.";
 }
 
 function runTimer() {
   document.getElementById('timer-start').style.display = "none";
   document.getElementById('timer-stop').style.display = "block";
-  
   timerInterval = setInterval(() => {
-    const remaining = timerEndTime - Date.now();
-    if (remaining <= 0) {
-      stopTimer();
-      alert("Blok soustředění dokončen! ✨");
-    } else {
-      const m = Math.floor(remaining/60000); const s = Math.floor((remaining%60000)/1000);
+    const rem = timerEndTime - Date.now();
+    if (rem <= 0) { stopTimer(); alert("Blok soustředění dokončen! ✨"); }
+    else {
+      const m = Math.floor(rem/60000); const s = Math.floor((rem%60000)/1000);
       document.getElementById('time-display').textContent = `${m}:${s<10?'0':''}${s}`;
     }
   }, 1000);
 }
 
-function fullReset() {
-    if(confirm("Opravdu chceš smazat úplně všechna data, včetně historie posledních 7 dní?")) {
-        localStorage.clear();
-        location.reload();
-    }
-}
-
 function render() {
   document.getElementById('date-now').textContent = new Date().toLocaleDateString('cs-CZ', { weekday:'long', day:'numeric', month:'long' });
   
-  // Mood & Energy grids
-  const renderGrid = (id, data, key) => {
+  const renderGrid = (id, data, key, tipId) => {
     const g = document.getElementById(id); g.innerHTML = '';
+    const tipBox = document.getElementById(tipId);
     data.forEach(d => {
       const b = document.createElement('div');
       b.className = `opt-btn ${state[key] === d.e ? 'selected' : ''}`;
       b.innerHTML = `<span class="opt-emoji">${d.e}</span><span class="opt-label">${d.l}</span>`;
-      b.onclick = () => { state[key] = d.e; saveData(); render(); };
+      b.onclick = () => { 
+        state[key] = d.e; 
+        tipBox.textContent = d.t; tipBox.classList.add('show');
+        saveData(); render(); 
+      };
       g.appendChild(b);
+      if(state[key] === d.e) { tipBox.textContent = d.t; tipBox.classList.add('show'); }
     });
   };
-  renderGrid('mood-grid', MOODS, 'mood');
-  renderGrid('energy-grid', ENERGIES, 'energy');
+  renderGrid('mood-grid', MOODS, 'mood', 'mood-tip');
+  renderGrid('energy-grid', ENERGIES, 'energy', 'energy-tip');
 
-  // Water 10x
   const wg = document.getElementById('water-grid'); wg.innerHTML = '';
   for(let i=1; i<=10; i++) {
     const g = document.createElement('div'); g.className = `glass ${i<=state.water?'filled':''}`;
@@ -226,15 +223,13 @@ function render() {
 
   document.getElementById('sleep-val').textContent = state.sleep;
 
-  // Dynamic Summary
   const mObj = MOODS.find(m => m.e === state.mood);
   const eObj = ENERGIES.find(e => e.e === state.energy);
-  let summary = `Dnes jsi vypila ${state.water} sklenic a spala ${state.sleep} hodin. `;
-  if(mObj || eObj) summary = `${mObj ? mObj.s : 'Den plyne'} a ${eObj ? eObj.s : 'hledáš energii'}. ` + summary;
-  if(state.focusTime > 0) summary += `<br><strong>Celkem se dnes soustředíš ${state.focusTime} minut! 🌿</strong>`;
-  document.getElementById('daily-summary').innerHTML = summary;
+  let summ = `Dnes jsi vypila ${state.water} sklenic vody a spala ${state.sleep} hodin. `;
+  if(mObj || eObj) summ = `${mObj ? mObj.s : 'Den nějak plyne'} a ${eObj ? eObj.s : 'hledáš energii'}. ` + summ;
+  if(state.focusTime > 0) summ += `<br><strong>Celkem se dnes soustředíš ${state.focusTime} minut! 🌿</strong>`;
+  document.getElementById('daily-summary').innerHTML = summ;
 
-  // History List
   const hl = document.getElementById('history-list'); hl.innerHTML = '';
   state.history.slice(0, 7).forEach(h => {
     hl.innerHTML += `<div class="history-item"><span style="color:var(--muted)">${h.d.split(' ').slice(1,3).join(' ')}</span><span>${h.m}</span></div>`;
@@ -242,14 +237,13 @@ function render() {
 }
 
 function addSleep(v) { state.sleep = Math.max(0, state.sleep + v); saveData(); render(); }
+function fullReset() { if(confirm("Smazat všechna data?")) { localStorage.clear(); location.reload(); } }
 
-// Check new day
 if (state.date !== new Date().toDateString()) {
   state.history.unshift({ d: state.date, m: state.mood || '?' });
   state.date = new Date().toDateString(); state.mood = null; state.energy = null; state.water = 0; state.focusTime = 0;
   saveData();
 }
-
 if (timerEndTime) runTimer();
 render();
 setTimer(15);
